@@ -1,0 +1,27 @@
+{
+  "graphify": {
+    "binary": "graphify",
+    "index_path": "graphify-out/"
+  },
+  "retries": {
+    "mechanical": 2,
+    "contract": 1,
+    "ambiguity": 0,
+    "security": 0
+  },
+  "dependency_depth": 1,
+  "retrieval_nudge": {
+    "mode": "block",
+    "auto_init": true
+  },
+  "observability": {
+    "provider": "langfuse",
+    "enabled": true,
+    "host": "env:LANGFUSE_HOST",
+    "public_key": "env:LANGFUSE_PUBLIC_KEY",
+    "secret_key": "env:LANGFUSE_SECRET_KEY"
+  },
+  "gates": {
+    "commit_requires_integration_review": true
+  }
+}

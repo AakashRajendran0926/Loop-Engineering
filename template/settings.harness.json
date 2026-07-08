@@ -1,0 +1,68 @@
+{
+  "hooks": {
+    "PreToolUse": [
+      {
+        "matcher": "Grep|Glob",
+        "hooks": [
+          { "type": "command", "command": "__PYTHON__ \"$CLAUDE_PROJECT_DIR/.claude/hooks/retrieval-nudge.py\"", "_harness": true }
+        ]
+      },
+      {
+        "matcher": "Bash",
+        "hooks": [
+          { "type": "command", "command": "__PYTHON__ \"$CLAUDE_PROJECT_DIR/.claude/hooks/commit-gate.py\"", "_harness": true }
+        ]
+      },
+      {
+        "matcher": "Task",
+        "hooks": [
+          { "type": "command", "command": "__PYTHON__ \"$CLAUDE_PROJECT_DIR/.claude/hooks/dispatch-gate.py\"", "_harness": true }
+        ]
+      },
+      {
+        "matcher": "*",
+        "hooks": [
+          { "type": "command", "command": "__PYTHON__ \"$CLAUDE_PROJECT_DIR/.claude/hooks/trace-emitter.py\"", "_harness": true }
+        ]
+      }
+    ],
+    "PostToolUse": [
+      {
+        "matcher": "Task",
+        "hooks": [
+          { "type": "command", "command": "__PYTHON__ \"$CLAUDE_PROJECT_DIR/.claude/hooks/state-updater.py\"", "_harness": true },
+          { "type": "command", "command": "__PYTHON__ \"$CLAUDE_PROJECT_DIR/.claude/hooks/trace-emitter.py\"", "_harness": true }
+        ]
+      }
+    ],
+    "SubagentStop": [
+      {
+        "hooks": [
+          { "type": "command", "command": "__PYTHON__ \"$CLAUDE_PROJECT_DIR/.claude/hooks/state-updater.py\"", "_harness": true },
+          { "type": "command", "command": "__PYTHON__ \"$CLAUDE_PROJECT_DIR/.claude/hooks/trace-emitter.py\"", "_harness": true }
+        ]
+      }
+    ],
+    "SessionStart": [
+      {
+        "hooks": [
+          { "type": "command", "command": "__PYTHON__ \"$CLAUDE_PROJECT_DIR/.claude/hooks/trace-emitter.py\"", "_harness": true }
+        ]
+      }
+    ],
+    "Stop": [
+      {
+        "hooks": [
+          { "type": "command", "command": "__PYTHON__ \"$CLAUDE_PROJECT_DIR/.claude/hooks/trace-emitter.py\"", "_harness": true }
+        ]
+      }
+    ],
+    "SessionEnd": [
+      {
+        "hooks": [
+          { "type": "command", "command": "__PYTHON__ \"$CLAUDE_PROJECT_DIR/.claude/hooks/trace-emitter.py\"", "_harness": true }
+        ]
+      }
+    ]
+  }
+}

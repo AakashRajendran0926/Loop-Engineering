@@ -1,0 +1,19 @@
+# Runtime artifacts produced inside adopter repos
+graphify-out/
+.claude/traces/
+
+# Node
+node_modules/
+*.log
+
+# Python
+__pycache__/
+*.pyc
+.pytest_cache/
+
+# Test scratch
+tests/.work/
+
+# OS
+.DS_Store
+Thumbs.db
