@@ -1,6 +1,6 @@
 {
   "name": "loop-engineering-harness",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Loop Engineering — a reversible, observable multi-agent Claude Code harness for brownfield codebases. Policy lives in exit codes and artifacts on disk, not in prompts.",
   "keywords": [
     "claude-code",
@@ -13,6 +13,7 @@
   "license": "MIT",
   "type": "commonjs",
   "bin": {
+    "loop-engineering-harness": "bin/cli.js",
     "agent-harness": "bin/cli.js",
     "loop-engineering": "bin/cli.js"
   },

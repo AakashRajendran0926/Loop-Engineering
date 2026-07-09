@@ -17,13 +17,27 @@ commands — plus **graphify** (deterministic code knowledge graph) and **Langfu
 
 ## Install
 
+Published on npm as [`loop-engineering-harness`](https://www.npmjs.com/package/loop-engineering-harness).
+Zero runtime dependencies — just Node ≥ 16.
+
+**Run without installing (recommended):**
+
 ```bash
 npx loop-engineering-harness detect .      # dry run — show exactly what will change
 npx loop-engineering-harness init .        # install (prints a plan, asks to confirm)
 npx loop-engineering-harness uninstall .   # remove everything; keeps your specs/
 ```
 
-> **Note:** You can also install directly from GitHub without publishing:
+**Or install globally** to get the `loop-engineering-harness` / `agent-harness` commands on your PATH:
+
+```bash
+npm install -g loop-engineering-harness
+
+loop-engineering-harness detect .
+loop-engineering-harness init .
+```
+
+> **No npm needed?** Install straight from GitHub:
 > ```bash
 > npx github:AakashRajendran0926/Loop-Engineering init .
 > ```
@@ -139,6 +153,10 @@ The driver processes a **feature queue**, running each in a fresh headless
 Escalations **park** (with a question for a human) instead of stalling the queue;
 a parked feature resumes from artifacts in a brand-new session — recover-from-
 compaction and resume-from-parking are the same mechanism.
+
+> Commands below assume a global install (`npm install -g loop-engineering-harness`).
+> Without one, prefix each with `npx loop-engineering-harness …`. The
+> `loop-engineering-harness` and `agent-harness` commands are interchangeable.
 
 ```bash
 agent-harness queue add "add order cancellation with refunds"
