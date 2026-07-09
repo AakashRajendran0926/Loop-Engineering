@@ -75,7 +75,7 @@ Build in this order. Each phase is independently demo-able, which matters for ad
 
 ### Phase 0 — Repo skeleton + installer core (the merge problem)
 
-The installer (`npx agent-harness init` or a `install.sh` to start) is the hardest and highest-risk component. It must handle repos that already have `.claude/` content.
+The installer (`npx loop-engineering-harness init` or a `install.sh` to start) is the hardest and highest-risk component. It must handle repos that already have `.claude/` content.
 
 Merge rules, in order of danger:
 
