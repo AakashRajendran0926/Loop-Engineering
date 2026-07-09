@@ -18,10 +18,15 @@ commands — plus **graphify** (deterministic code knowledge graph) and **Langfu
 ## Install
 
 ```bash
-npx agent-harness detect .      # dry run — show exactly what will change
-npx agent-harness init .        # install (prints a plan, asks to confirm)
-npx agent-harness uninstall .   # remove everything; keeps your specs/
+npx loop-engineering-harness detect .      # dry run — show exactly what will change
+npx loop-engineering-harness init .        # install (prints a plan, asks to confirm)
+npx loop-engineering-harness uninstall .   # remove everything; keeps your specs/
 ```
+
+> **Note:** You can also install directly from GitHub without publishing:
+> ```bash
+> npx github:AakashRajendran0926/Loop-Engineering init .
+> ```
 
 Brownfield-safe by construction:
 
