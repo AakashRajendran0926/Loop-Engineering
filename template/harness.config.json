@@ -22,6 +22,37 @@
     "secret_key": "env:LANGFUSE_SECRET_KEY"
   },
   "gates": {
-    "commit_requires_integration_review": true
+    "commit_requires_integration_review": true,
+    "commit_requires_version": true
+  },
+  "versioning": {
+    "enabled": true,
+    "manifests": ["package.json", "requirements.txt", "pyproject.toml", "go.mod", "Cargo.toml"],
+    "require_major_dep_ack": true,
+    "require_code_bump": true,
+    "require_dev_history": true
+  },
+  "budgets": {
+    "context_pack": 2000,
+    "task_entry": 300,
+    "review_findings": 500,
+    "per_task_default": 15000,
+    "dispatch_prompt_max": 8000
+  },
+  "circuit_breaker": {
+    "footprint_violations": { "warn": 1, "halt": 2 },
+    "max_escalations_per_feature": 2,
+    "burndown": { "warn_pct": 80, "halt_pct": 100 }
+  },
+  "requirements": {
+    "enabled": true,
+    "min_acceptance_criteria": 1,
+    "require_coverage": true
+  },
+  "loop": {
+    "queue": "specs/_queue.json",
+    "answer_queue": "specs/_answers.json",
+    "headless": true,
+    "auto_approve": false
   }
 }

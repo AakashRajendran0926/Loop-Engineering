@@ -121,7 +121,7 @@ function stripSettings(targetPath) {
     for (const group of groups) {
       const hooks = (group.hooks || []).filter((h) => h._harness !== true &&
         !(typeof h.command === 'string' && /\.claude[\\/]hooks[\\/]/.test(h.command) &&
-          /(retrieval-nudge|commit-gate|dispatch-gate|state-updater|trace-emitter)\.py/.test(h.command)));
+          /(retrieval-nudge|commit-gate|dispatch-gate|requirements-gate|state-updater|trace-emitter|divergence-monitor|precompact-guard|session-rehydrate|artifact-size|version-tracker|version-gate)\.py/.test(h.command)));
       if (hooks.length) kept.push(Object.assign({}, group, { hooks }));
     }
     if (kept.length) settings.hooks[event] = kept;

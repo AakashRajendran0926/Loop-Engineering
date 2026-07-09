@@ -19,6 +19,7 @@ import sys
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 import harness_lib as lib  # noqa: E402
+import loop_lib as loop  # noqa: E402
 
 REVIEW_RE = re.compile(r"review\.(?P<task>.+)\.(?P<n>\d+)\.json$")
 
@@ -83,7 +84,34 @@ def main():
             ts["status"] = "escalate"
             ts["repeat_finding"] = True
 
+    # Mirror the in-flight task (set by dispatch-gate's .current.json) into state
+    # so the PreCompact snapshot captures it as part of the load-bearing minimum.
+    cur = loop.read_current(feature_dir)
+    if cur and cur.get("task_id"):
+        state["current_task"] = cur["task_id"]
+
+    # Derive the pipeline phase (part of Rule 4's load-bearing minimum). Purely a
+    # function of which artifacts exist — the snapshot must never guess.
+    tvals = state["tasks"].values()
+    if not graph.get("tasks"):
+        state["phase"] = "planning"
+    elif (not state["tasks"]) or any(t.get("status") != "done" for t in tvals):
+        state["phase"] = "execution"
+    else:
+        integ = glob.glob(os.path.join(feature_dir, "review.integration.*.json"))
+        passed = any((lib.read_json(p, default={}) or {}).get("status") == "pass" for p in integ)
+        state["phase"] = "committed" if passed else "integration"
+
+    # Derive circuit-breaker health from the disk signals just reconciled
+    # (retry caps, repeat findings, escalation count, footprint violations).
+    loop.recompute_health(state, feature_dir, lib.load_config(root))
+
     lib.write_json(state_path, state)
+
+    # Maintain specs/_active.json — the pointer precompact-guard.py and
+    # session-rehydrate.py read to find the feature to snapshot / rehydrate.
+    lib.write_json(os.path.join(lib.specs_root(root), "_active.json"),
+                   {"feature": os.path.basename(feature_dir)})
     lib.allow()
 
 
