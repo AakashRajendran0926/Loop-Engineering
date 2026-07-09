@@ -19,6 +19,10 @@ diff. Check exactly three things:
 3. a `graphify query` over every touched file — did anyone change something that
    other, untouched code depends on? (This is where cross-specialist seam bugs
    surface — a renamed field a parallel task still reads the old way.)
+4. `specs/<feature>/dependencies.json` — if `has_major` is true, treat the
+   dependency bump as a finding to scrutinize (breaking upgrade, security, license).
+   Once satisfied it's safe, the human/orchestrator acknowledges it
+   (`version.py ack-deps`); an unacknowledged major bump keeps the version gate shut.
 
 ## Reads
 - `git diff` (per-task: the task's files; integration: `git diff main...HEAD`)

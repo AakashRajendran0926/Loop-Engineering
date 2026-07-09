@@ -10,12 +10,14 @@
       {
         "matcher": "Bash",
         "hooks": [
-          { "type": "command", "command": "__PYTHON__ \"$CLAUDE_PROJECT_DIR/.claude/hooks/commit-gate.py\"", "_harness": true }
+          { "type": "command", "command": "__PYTHON__ \"$CLAUDE_PROJECT_DIR/.claude/hooks/commit-gate.py\"", "_harness": true },
+          { "type": "command", "command": "__PYTHON__ \"$CLAUDE_PROJECT_DIR/.claude/hooks/version-gate.py\"", "_harness": true }
         ]
       },
       {
         "matcher": "Task",
         "hooks": [
+          { "type": "command", "command": "__PYTHON__ \"$CLAUDE_PROJECT_DIR/.claude/hooks/requirements-gate.py\"", "_harness": true },
           { "type": "command", "command": "__PYTHON__ \"$CLAUDE_PROJECT_DIR/.claude/hooks/dispatch-gate.py\"", "_harness": true }
         ]
       },
@@ -33,6 +35,14 @@
           { "type": "command", "command": "__PYTHON__ \"$CLAUDE_PROJECT_DIR/.claude/hooks/state-updater.py\"", "_harness": true },
           { "type": "command", "command": "__PYTHON__ \"$CLAUDE_PROJECT_DIR/.claude/hooks/trace-emitter.py\"", "_harness": true }
         ]
+      },
+      {
+        "matcher": "Edit|Write|MultiEdit",
+        "hooks": [
+          { "type": "command", "command": "__PYTHON__ \"$CLAUDE_PROJECT_DIR/.claude/hooks/divergence-monitor.py\"", "_harness": true },
+          { "type": "command", "command": "__PYTHON__ \"$CLAUDE_PROJECT_DIR/.claude/hooks/artifact-size.py\"", "_harness": true },
+          { "type": "command", "command": "__PYTHON__ \"$CLAUDE_PROJECT_DIR/.claude/hooks/version-tracker.py\"", "_harness": true }
+        ]
       }
     ],
     "SubagentStop": [
@@ -46,6 +56,15 @@
     "SessionStart": [
       {
         "hooks": [
+          { "type": "command", "command": "__PYTHON__ \"$CLAUDE_PROJECT_DIR/.claude/hooks/session-rehydrate.py\"", "_harness": true },
+          { "type": "command", "command": "__PYTHON__ \"$CLAUDE_PROJECT_DIR/.claude/hooks/trace-emitter.py\"", "_harness": true }
+        ]
+      }
+    ],
+    "PreCompact": [
+      {
+        "hooks": [
+          { "type": "command", "command": "__PYTHON__ \"$CLAUDE_PROJECT_DIR/.claude/hooks/precompact-guard.py\"", "_harness": true },
           { "type": "command", "command": "__PYTHON__ \"$CLAUDE_PROJECT_DIR/.claude/hooks/trace-emitter.py\"", "_harness": true }
         ]
       }

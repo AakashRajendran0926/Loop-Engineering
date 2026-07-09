@@ -29,7 +29,38 @@ DEFAULT_CONFIG = {
         "auto_init": True,
     },
     "observability": {"provider": "langfuse", "enabled": True},
-    "gates": {"commit_requires_integration_review": True},
+    "gates": {"commit_requires_integration_review": True, "commit_requires_version": True},
+    "versioning": {
+        "enabled": True,
+        "manifests": ["package.json", "requirements.txt", "pyproject.toml", "go.mod", "Cargo.toml"],
+        "require_major_dep_ack": True,
+        "require_code_bump": True,
+        "require_dev_history": True,
+    },
+    # ---- V1.0 loop layer (DevelopmentUpdates.md) -------------------------
+    "budgets": {
+        "context_pack": 2000,
+        "task_entry": 300,
+        "review_findings": 500,
+        "per_task_default": 15000,
+        "dispatch_prompt_max": 8000,
+    },
+    "circuit_breaker": {
+        "footprint_violations": {"warn": 1, "halt": 2},
+        "max_escalations_per_feature": 2,
+        "burndown": {"warn_pct": 80, "halt_pct": 100},
+    },
+    "requirements": {
+        "enabled": True,
+        "min_acceptance_criteria": 1,
+        "require_coverage": True,
+    },
+    "loop": {
+        "queue": "specs/_queue.json",
+        "answer_queue": "specs/_answers.json",
+        "headless": True,
+        "auto_approve": False,
+    },
 }
 
 

@@ -25,13 +25,21 @@ have to.
 - `graphify query` output; source files it points to
 
 ## Writes — exactly one file
-- `specs/<feature>/context-pack.md`, **≤ ~2000 tokens**, four sections:
+- `specs/<feature>/context-pack.md`, **≤ ~2000 tokens**. Start with these
+  feature-wide sections:
   - **What exists** — the modules/entities relevant to this feature
   - **Dependency map** — what depends on what (name the shared dependents; these
     become sequential edges later)
   - **Conventions** — house patterns to match (error handling, naming, test style)
   - **Risk notes** — shared code, cross-cutting callers, anything that will bite
     a specialist (e.g. "refund logic is also called from the admin panel")
+- **Then, per-area sections keyed to the anticipated work areas (Context Rule 2).**
+  Structure the pack so each future specialist can be handed ONLY its slice — a
+  `## Area: database`, `## Area: backend`, `## Area: frontend` (name the areas the
+  feature actually spans). The orchestrator lifts one area into each task-scoped
+  dispatch prompt; feature-wide context inside a single task's window is itself a
+  distractor. If you cannot cleanly separate an area, say so in Risk notes rather
+  than dumping everything into one blob.
 
 ## Must not
 - Do not write code, plans, or contracts. Do not edit anything but your one file.

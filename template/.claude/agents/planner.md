@@ -30,14 +30,35 @@ Load the `contract-writing` skill before writing contracts.
      - api/orders.ts
    produces: [cancel-api]
    consumes: [migration]
+   satisfies: [AC1, AC2]
+   est_tokens: 12000
    ```
+
+   **`satisfies:` is the anti-divergence contract.** Tag every task with the
+   acceptance-criteria ids (from `discovery.md`) it delivers. The requirements
+   gate refuses to proceed unless **every** AC is covered by some task and **no**
+   task cites an AC that isn't in discovery.md. So: cover all of what was asked
+   (no gaps) and build only what was asked (no scope creep). If you find you need
+   a task with no AC, the requirement is missing — stop and flag it, don't invent
+   scope.
+
+   Give every task an **`est_tokens`** estimate (implementation + review + a
+   retry's worth of headroom). These sum into the approval package's budget and
+   feed the estimate-vs-actual metric (Rule 5) — the burndown ceiling the circuit
+   breaker later enforces is only as honest as these numbers, so estimate
+   deliberately, not reflexively.
 
    Footprint rules: be precise and minimal. A footprint that is too broad forces
    false sequential edges; one that is too narrow risks a specialist needing a
    file it can't touch (which it must then report, not grab). Prefer specific
    files over directories unless the task genuinely owns the whole directory.
 
-3. **Last action, always:** invoke the extractor so the schedule matches the plan:
+3. **Declare the release impact.** Put a line `VERSION-IMPACT: major|minor|patch`
+   in `plan.md` — the Version Controller uses it to compute the semver bump.
+   Breaking API/contract changes → `major`; new capability → `minor`; fix-only →
+   `patch`. This is part of what the human signs at approval.
+
+4. **Last action, always:** invoke the extractor so the schedule matches the plan:
 
    ```
    python .claude/scripts/extract-deps.py --plan specs/<feature>/plan.md --out specs/<feature>/task-graph.json
