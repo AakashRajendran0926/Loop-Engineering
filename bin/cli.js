@@ -10,17 +10,19 @@ const readline = require('readline');
 const { detect, formatReport } = require('../src/detect');
 const { install } = require('../src/install');
 const { uninstall } = require('../src/uninstall');
+const { ensureGraphify } = require('../src/graphify');
 const loop = require('../src/loop');
 const { computeMetrics, formatMetrics } = require('../src/metrics');
 
 function parseArgs(argv) {
-  const out = { _: [], yes: false, python: null, dryRun: false, once: false, autoApprove: false };
+  const out = { _: [], yes: false, python: null, dryRun: false, once: false, autoApprove: false, graphify: true };
   for (let i = 0; i < argv.length; i++) {
     const a = argv[i];
     if (a === '--yes' || a === '-y') out.yes = true;
     else if (a === '--dry-run') out.dryRun = true;
     else if (a === '--once') out.once = true;
     else if (a === '--auto-approve') out.autoApprove = true;
+    else if (a === '--no-graphify') out.graphify = false;
     else if (a === '--python') out.python = argv[++i];
     else if (a.startsWith('--python=')) out.python = a.slice(9);
     else out._.push(a);
@@ -57,6 +59,7 @@ async function main() {
       '  agent-harness metrics              Per-feature burndown + tokens-per-task',
       '',
       'Flags:  --yes | -y   skip confirmation      --python <cmd>   force interpreter',
+      '        --no-graphify  skip installing graphify at init',
       '        --once       one feature then stop   --auto-approve  headless self-approval',
       '        --dry-run    plan the loop, run nothing',
     ].join('\n'));
@@ -140,7 +143,21 @@ async function main() {
     console.log(`Installed. CLAUDE.md: ${manifest.claudeMd}; ` +
       `${manifest.filesAdded.length} files added` +
       (manifest.filesRenamed.length ? `, ${manifest.filesRenamed.length} collision(s) renamed to *.harness.*` : '') +
-      `. Next: /feature <description>`);
+      `.`);
+
+    // Retrieval is graph-first — install graphify now (best-effort; the
+    // /graphify skill self-installs on first use if this is skipped or fails).
+    if (args.graphify) {
+      console.log('\nInstalling graphify (graph-first retrieval)...');
+      const g = ensureGraphify({ python: args.python });
+      console.log('  ' + g.message);
+    }
+
+    console.log('\nNext steps:');
+    console.log('  1. Build the knowledge base for this project:  /graphify .');
+    console.log('     (existing/brownfield repos: this indexes your codebase into graphify-out/;');
+    console.log('      /feature also auto-builds it on first run if you skip this)');
+    console.log('  2. Start a feature:  /feature <description>');
     return 0;
   }
 

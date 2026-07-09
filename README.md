@@ -42,6 +42,20 @@ loop-engineering-harness init .
 > npx github:AakashRajendran0926/Loop-Engineering init .
 > ```
 
+### After install — build the knowledge base
+
+`init` installs **graphify** (PyPI `graphifyy`, via uv/pipx/pip) because retrieval
+is graph-first. Then, inside Claude Code, build the graph for your **existing**
+codebase once:
+
+```
+/graphify .          # indexes this repo into graphify-out/ (the knowledge base)
+/feature <description>   # /feature also auto-builds the graph on first run if you skip the step above
+```
+
+Skip the graphify install with `init . --no-graphify` (the `/graphify` skill
+self-installs on first use either way).
+
 Brownfield-safe by construction:
 
 - **`CLAUDE.md`** gains a delimited `<!-- harness:begin -->…<!-- harness:end -->`
@@ -270,7 +284,7 @@ npm test        # node tests/run.js — 84 checks across extract-deps determinis
 
 - **Node ≥ 16** (installer + loop driver; zero runtime dependencies)
 - **Python 3.8+** on PATH (`python`, `python3`, or `py`) for hooks/scripts
-- **graphify** for graph-first retrieval — `/graphify` self-installs it on first run
+- **graphify** for graph-first retrieval — `init` installs it (PyPI `graphifyy`); `/graphify` also self-installs it on first run
 - **Claude Code** (for the `claude -p` headless loop) and, optionally, **Langfuse**
 
 ## Reversibility
